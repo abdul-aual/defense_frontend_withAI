@@ -1,0 +1,741 @@
+
+.rentwise-chatbot {
+    --rentwise-primary: #176b52;
+    --rentwise-primary-dark: #10523f;
+    --rentwise-text: #17231f;
+    --rentwise-muted: #718078;
+    --rentwise-border: #e4ebe7;
+    --rentwise-surface: #f6f9f7;
+  
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 850px;
+    height: min(780px, calc(100vh - 48px));
+    min-height: 500px;
+    margin: 24px auto;
+    overflow: hidden;
+    color: var(--rentwise-text);
+    background: #fff;
+    border: 1px solid var(--rentwise-border);
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(23, 65, 47, 0.09);
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+  }
+  
+  /* Header */
+  
+  .rentwise-chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 19px 22px;
+    color: #fff;
+    background: var(--rentwise-primary);
+  }
+  
+  .rentwise-chat-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+  
+  .rentwise-chat-logo {
+    display: grid;
+    flex-shrink: 0;
+    width: 43px;
+    height: 43px;
+    place-items: center;
+    color: var(--rentwise-primary);
+    background: #fff;
+    border-radius: 14px;
+    font-size: 23px;
+    font-weight: 800;
+  }
+  
+  .rentwise-chat-brand h2 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  
+  .rentwise-chat-brand p {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 5px 0 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 12px;
+  }
+  
+  .rentwise-online-dot {
+    width: 8px;
+    height: 8px;
+    background: #8ef0b7;
+    border-radius: 50%;
+  }
+  
+  .rentwise-reset-button {
+    flex-shrink: 0;
+    padding: 9px 13px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: background 0.2s ease;
+  }
+  
+  .rentwise-reset-button:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.22);
+  }
+  
+  .rentwise-reset-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  /* Conversation area */
+  
+  .rentwise-chat-messages {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 22px;
+    min-height: 0;
+    padding: 24px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: #fbfcfb;
+    scroll-behavior: smooth;
+  }
+  
+  .rentwise-message-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .rentwise-message-row.user-row {
+    justify-content: flex-end;
+  }
+  
+  .rentwise-message-row.assistant-row {
+    justify-content: flex-start;
+  }
+  
+  .rentwise-avatar {
+    display: grid;
+    flex-shrink: 0;
+    width: 31px;
+    height: 31px;
+    place-items: center;
+    color: #fff;
+    background: var(--rentwise-primary);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 800;
+  }
+  
+  .rentwise-message-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: min(100%, 650px);
+    min-width: 0;
+  }
+  
+  .rentwise-message-bubble {
+    width: fit-content;
+    max-width: 100%;
+    padding: 13px 16px;
+    border-radius: 15px;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+  }
+  
+  .assistant-bubble {
+    color: #27352e;
+    background: #fff;
+    border: 1px solid var(--rentwise-border);
+    border-top-left-radius: 5px;
+  }
+  
+  .user-bubble {
+    color: #fff;
+    background: var(--rentwise-primary);
+    border-top-right-radius: 5px;
+  }
+  
+  /* Vehicle results */
+  
+  .rentwise-vehicle-results {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .rentwise-vehicle-results h3 {
+    margin: 0;
+    color: var(--rentwise-text);
+    font-size: 15px;
+    font-weight: 750;
+  }
+  
+  .rentwise-vehicle-card {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--rentwise-border);
+    border-radius: 14px;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  
+  .rentwise-vehicle-card:hover {
+    border-color: #b8d8c9;
+    box-shadow: 0 7px 22px rgba(23, 65, 47, 0.07);
+    transform: translateY(-1px);
+  }
+  
+  .rentwise-vehicle-image,
+  .rentwise-vehicle-image-placeholder {
+    display: block;
+    width: 150px;
+    height: 100%;
+    min-height: 165px;
+    max-height: 210px;
+    object-fit: cover;
+    background: #edf2ee;
+  }
+  
+  .rentwise-vehicle-image-placeholder {
+    display: grid;
+    padding: 12px;
+    place-items: center;
+    color: var(--rentwise-muted);
+    font-size: 12px;
+    text-align: center;
+  }
+  
+  .rentwise-vehicle-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    min-width: 0;
+    padding: 15px;
+  }
+  
+  .rentwise-vehicle-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  
+  .rentwise-vehicle-title-row h4 {
+    min-width: 0;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 750;
+    overflow-wrap: anywhere;
+  }
+  
+  .rentwise-vehicle-type {
+    flex-shrink: 0;
+    padding: 4px 8px;
+    color: var(--rentwise-primary);
+    background: #eaf5ef;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  
+  .rentwise-vehicle-city {
+    margin: -4px 0 0;
+    color: var(--rentwise-muted);
+    font-size: 12px;
+  }
+  
+  .rentwise-vehicle-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  
+  .rentwise-vehicle-specs span {
+    padding: 5px 8px;
+    color: #4d5d54;
+    background: var(--rentwise-surface);
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 550;
+  }
+  
+  .rentwise-vehicle-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 2px;
+    padding-top: 11px;
+    border-top: 1px solid #edf1ee;
+  }
+  
+  .rentwise-vehicle-price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  
+  .rentwise-vehicle-price strong {
+    color: var(--rentwise-primary);
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  
+  .rentwise-vehicle-price span {
+    color: var(--rentwise-muted);
+    font-size: 11px;
+  }
+  
+  .rentwise-book-button {
+    flex-shrink: 0;
+    padding: 10px 13px;
+    color: #fff;
+    background: var(--rentwise-primary);
+    border: 0;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease;
+  }
+  
+  .rentwise-book-button:hover {
+    background: var(--rentwise-primary-dark);
+    transform: translateY(-1px);
+  }
+  
+  .rentwise-book-button:focus-visible,
+  .rentwise-chat-form button:focus-visible,
+  .rentwise-chat-form input:focus-visible,
+  .rentwise-reset-button:focus-visible {
+    outline: 3px solid #a3d8bd;
+    outline-offset: 2px;
+  }
+  
+  /* Loading state */
+  
+  .rentwise-typing-indicator {
+    padding: 12px 15px;
+    color: var(--rentwise-muted);
+    background: #fff;
+    border: 1px solid var(--rentwise-border);
+    border-radius: 12px;
+    font-size: 13px;
+  }
+  
+  /* Error message */
+  
+  .rentwise-chat-error {
+    margin: 0;
+    padding: 10px 20px;
+    color: #a32e2e;
+    background: #fff1f1;
+    border-top: 1px solid #f2dada;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  
+  /* Input area */
+  
+  .rentwise-chat-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px 10px;
+    background: #fff;
+    border-top: 1px solid var(--rentwise-border);
+  }
+  
+  .rentwise-chat-form input {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+    padding: 13px 15px;
+    color: var(--rentwise-text);
+    background: #f8faf8;
+    border: 1px solid #dfe7e1;
+    border-radius: 11px;
+    outline: none;
+    font: inherit;
+    font-size: 13px;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  
+  .rentwise-chat-form input::placeholder {
+    color: #94a198;
+  }
+  
+  .rentwise-chat-form input:focus {
+    border-color: var(--rentwise-primary);
+    box-shadow: 0 0 0 3px rgba(23, 107, 82, 0.09);
+  }
+  
+  .rentwise-chat-form input:disabled {
+    opacity: 0.65;
+  }
+  
+  .rentwise-chat-form button {
+    flex-shrink: 0;
+    min-width: 76px;
+    padding: 13px 17px;
+    color: #fff;
+    background: var(--rentwise-primary);
+    border: none;
+    border-radius: 11px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    transition: background 0.2s ease;
+  }
+  
+  .rentwise-chat-form button:hover:not(:disabled) {
+    background: var(--rentwise-primary-dark);
+  }
+  
+  .rentwise-chat-form button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+  
+  .rentwise-chat-disclaimer {
+    margin: 0;
+    padding: 0 20px 14px;
+    color: #89958d;
+    background: #fff;
+    font-size: 10px;
+    line-height: 1.5;
+    text-align: center;
+  }
+  
+  /* Tablet and mobile */
+  
+  @media (max-width: 600px) {
+    .rentwise-chatbot {
+      width: 100%;
+      height: calc(100dvh - 16px);
+      min-height: 420px;
+      margin: 8px auto;
+      border-radius: 14px;
+    }
+  
+    .rentwise-chat-header {
+      padding: 14px;
+    }
+  
+    .rentwise-chat-logo {
+      width: 38px;
+      height: 38px;
+    }
+  
+    .rentwise-chat-brand h2 {
+      font-size: 15px;
+    }
+  
+    .rentwise-reset-button {
+      padding: 8px 10px;
+      font-size: 11px;
+    }
+  
+    .rentwise-chat-messages {
+      gap: 17px;
+      padding: 16px 12px;
+    }
+  
+    .rentwise-message-row {
+      gap: 7px;
+    }
+  
+    .rentwise-avatar {
+      width: 27px;
+      height: 27px;
+    }
+  
+    .rentwise-message-bubble {
+      padding: 11px 12px;
+      font-size: 13px;
+    }
+  
+    .rentwise-vehicle-card {
+      grid-template-columns: 105px minmax(0, 1fr);
+    }
+  
+    .rentwise-vehicle-image,
+    .rentwise-vehicle-image-placeholder {
+      width: 105px;
+      min-height: 150px;
+    }
+  
+    .rentwise-vehicle-details {
+      gap: 8px;
+      padding: 10px;
+    }
+  
+    .rentwise-vehicle-title-row {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 5px;
+    }
+  
+    .rentwise-vehicle-title-row h4 {
+      font-size: 13px;
+    }
+  
+    .rentwise-vehicle-specs {
+      gap: 5px;
+    }
+  
+    .rentwise-vehicle-specs span {
+      padding: 4px 6px;
+      font-size: 9px;
+    }
+  
+    .rentwise-vehicle-price strong {
+      font-size: 16px;
+    }
+  
+    .rentwise-book-button {
+      padding: 9px 10px;
+      font-size: 11px;
+    }
+  
+    .rentwise-chat-form {
+      gap: 7px;
+      padding: 12px 10px 8px;
+    }
+  
+    .rentwise-chat-form input {
+      padding: 12px 10px;
+      font-size: 12px;
+    }
+  
+    .rentwise-chat-form button {
+      min-width: 60px;
+      padding: 12px 10px;
+    }
+  
+    .rentwise-chat-disclaimer {
+      padding: 0 12px 10px;
+      font-size: 9px;
+    }
+  }
+  
+  @media (max-width: 360px) {
+    .rentwise-vehicle-card {
+      grid-template-columns: 1fr;
+    }
+  
+    .rentwise-vehicle-image,
+    .rentwise-vehicle-image-placeholder {
+      width: 100%;
+      height: 150px;
+      min-height: 150px;
+    }
+  
+    .rentwise-vehicle-title-row {
+      align-items: center;
+      flex-direction: row;
+    }
+  }
+  
+/* =========================================================
+   Chatbot upgrade: textarea input, suggestions, typing dots,
+   retry button, price-only cards
+   ========================================================= */
+
+.rentwise-chat-form {
+  align-items: flex-end;
+}
+
+.rentwise-chat-form textarea {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  max-height: 110px;
+  padding: 13px 15px;
+  color: var(--rentwise-text);
+  background: #f8faf8;
+  border: 1px solid #dfe7e1;
+  border-radius: 11px;
+  outline: none;
+  resize: none;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.rentwise-chat-form textarea::placeholder {
+  color: #94a198;
+}
+
+.rentwise-chat-form textarea:focus {
+  border-color: var(--rentwise-primary);
+  box-shadow: 0 0 0 3px rgba(23, 107, 82, 0.09);
+}
+
+.rentwise-chat-form textarea:focus-visible,
+.rentwise-suggestion-chip:focus-visible,
+.rentwise-retry-button:focus-visible {
+  outline: 3px solid #a3d8bd;
+  outline-offset: 2px;
+}
+
+.rentwise-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-left: 41px;
+}
+
+.rentwise-suggestion-chip {
+  padding: 9px 13px;
+  color: var(--rentwise-primary);
+  background: #fff;
+  border: 1px solid #b8d8c9;
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.rentwise-suggestion-chip:hover {
+  background: #eaf5ef;
+  border-color: var(--rentwise-primary);
+}
+
+.rentwise-typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 15px 16px;
+}
+
+.rentwise-typing-dot {
+  width: 7px;
+  height: 7px;
+  background: #9bb5a8;
+  border-radius: 50%;
+  animation: rentwise-typing 1.1s ease-in-out infinite;
+}
+
+.rentwise-typing-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.rentwise-typing-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes rentwise-typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rentwise-typing-dot {
+    animation: none;
+  }
+}
+
+.rentwise-chat-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rentwise-retry-button {
+  flex-shrink: 0;
+  padding: 6px 11px;
+  color: #a32e2e;
+  background: #fff;
+  border: 1px solid #e5b9b9;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.rentwise-retry-button:hover {
+  background: #ffe9e9;
+}
+
+.rentwise-vehicle-total {
+  width: 100%;
+  color: var(--rentwise-muted);
+  font-size: 10px;
+}
+
+.rentwise-book-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.rentwise-check-button {
+  color: var(--rentwise-primary);
+  background: #eaf5ef;
+  border: 1px solid #b8d8c9;
+}
+
+.rentwise-check-button:hover:not(:disabled) {
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .rentwise-chat-form textarea {
+    padding: 12px 10px;
+    font-size: 12px;
+  }
+
+  .rentwise-suggestions {
+    padding-left: 0;
+  }
+}
